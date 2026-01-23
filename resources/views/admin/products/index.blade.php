@@ -63,7 +63,9 @@
                     <th>Name</th>
                     <th>Category</th>
                     <th>SKU</th>
-                    <th>Price</th>
+                    <th>Original Price</th>
+                    <th>Discount (%)</th>
+                    <th>Final Price</th>
                     <th>Qty</th>
                     <th>Status</th>
                     <th width="180">Actions</th>
@@ -89,6 +91,8 @@
                     <td>{{ $product->category->name ?? '—' }}</td>
                     <td>{{ $product->sku }}</td>
                     <td>{{ number_format($product->price,2) }}</td>
+                    <td>{{ $product->discount_percentage ? $product->discount_percentage . '%' : '—' }}</td>
+                    <td>{{ number_format($product->final_price,2) }}</td>
                     <td>{{ $product->quantity }}</td>
 
                     <td>
@@ -114,7 +118,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9" class="text-center py-5 text-muted">
+                    <td colspan="11" class="text-center py-5 text-muted">
                         No products found
                     </td>
                 </tr>

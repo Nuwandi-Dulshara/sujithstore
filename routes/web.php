@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminSettingsController;
+use App\Http\Controllers\FrontendController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -32,7 +33,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware('guest:admin')->group(function () {
-
         // Admin Register
         Route::get('/register', [AdminAuthController::class, 'showRegisterForm'])
             ->name('register');
@@ -50,7 +50,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware('auth:admin')->group(function () {
-
         // Logout
         Route::post('/logout', [AdminAuthController::class, 'logout'])
             ->name('logout');
@@ -59,32 +58,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
-        /*
-        |--------------------------------------------------------------------------
-        | USERS CRUD (ONLY name, email, password)
-        |--------------------------------------------------------------------------
-        */
+        // USERS CRUD
         Route::resource('users', AdminUserController::class);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Categories CRUD
-        |--------------------------------------------------------------------------
-        */
+        // Categories CRUD
         Route::resource('categories', AdminCategoryController::class);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Products CRUD
-        |--------------------------------------------------------------------------
-        */
+        // Products CRUD
         Route::resource('products', AdminProductController::class);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Settings
-        |--------------------------------------------------------------------------
-        */
+        // Settings
         Route::get('/settings', [AdminSettingsController::class, 'index'])
             ->name('settings');
 
@@ -104,7 +87,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 | Redirect root URL to admin login
 |
 */
+Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('category.show');
 
-Route::get('/', function () {
-    return redirect()->route('admin.login');
-});
+
+require __DIR__ . '/user.php';

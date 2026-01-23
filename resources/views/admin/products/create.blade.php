@@ -164,7 +164,7 @@
 
                             <div class="col-md-4">
                                 <label class="form-label">Discount Price</label>
-                                <input type="number" name="discount_price" class="form-control">
+                                <input type="number" name="discount_percentage" class="form-control" min="0" max="100" placeholder="e.g. 20">
                             </div>
 
                             <div class="col-md-4">

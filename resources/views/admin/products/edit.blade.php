@@ -111,8 +111,8 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Discount Price</label>
-                                <input type="number" name="discount_price" value="{{ $product->discount_price }}" class="form-control">
+                                <label class="form-label">Discount (%)</label>
+                                <input type="number" name="discount_percentage" value="{{ $product->discount_percentage }}" class="form-control" min="0" max="100">
                             </div>
 
                             <div class="col-md-4 mb-3">
