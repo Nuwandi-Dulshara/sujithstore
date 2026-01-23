@@ -982,8 +982,9 @@
                                     class="d-inline-block align-text-top"
                                 />
                             </a>
-                            <!-- Search form -->
-                            <form
+<form
+                                method="GET"
+                                action="{{ route('search') }}"
                                 class="d-flex w-50 search-form mx-5"
                                 role="search"
                             >
@@ -1007,8 +1008,10 @@
                                     </span>
                                     <input
                                         type="text"
+                                        name="q"
+                                        value="{{ request('q') }}"
                                         class="form-control border-start-0 search-input"
-                                        placeholder="Search product or brand here............."
+                                        placeholder="Search product or category here..."
                                         aria-label="Search"
                                     />
                                 </div>
@@ -1074,36 +1077,7 @@
                             />
                         </a>
                         <!-- Search form -->
-                        <form
-                            class="d-flex w-50 search-form mx-5"
-                            role="search"
-                        >
-                            <div class="input-group w-100">
-                                <!-- Category button with icon -->
-                                <button
-                                    class="btn btn-custome category-btn"
-                                    type="button"
-                                >
-                                    <span class="d-none d-sm-inline"
-                                        >Categories</span
-                                    >
-                                    <i class="bi bi-windows mx-sm-2"></i>
-                                </button>
 
-                                <!-- Search input with icon -->
-                                <span
-                                    class="input-group-text bg-white border-start-0"
-                                >
-                                    <i class="bi bi-search"></i>
-                                </span>
-                                <input
-                                    type="text"
-                                    class="form-control border-start-0 search-input"
-                                    placeholder="Search product or brand here............."
-                                    aria-label="Search"
-                                />
-                            </div>
-                        </form>
 
                         <button
                             class="navbar-toggler ms-auto d-lg-none"
@@ -1208,27 +1182,16 @@
                     >
                         <h5 class="mx-3">Sorted by:</h5>
                         <div class="d-flex align-items-end gap-4">
-                            <div
-                                class="custom-dropdown position-relative"
-                                style="
-                                    display: inline-block;
-                                    width: 200px;
-                                    margin-left: 10px;
-                                "
-                                id="orderStatusDropdown"
-                            >
-                                <select id="" class="form-select">
-                                    <option value="">Low to high</option>
-                                    <option value="">High to low</option>
-                                    <option value="">A-Z</option>
-                                    <option value="">Z-A</option>
+                            <form id="sortForm" method="GET" action="{{ url()->current() }}" style="display:inline-block; width:200px; margin-left:10px;">
+                                <input type="hidden" name="q" value="{{ request('q') }}" />
+                                <select id="sortSelect" name="sort" onchange="this.form.submit()" class="form-select">
+                                    <option value="">Default</option>
+                                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to high</option>
+                                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to low</option>
+                                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Name: A-Z</option>
+                                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name: Z-A</option>
                                 </select>
-                                <span
-                                    class="dropdown-arrow position-absolute top-50 end-0 translate-middle-y pe-3"
-                                >
-                                    <i class="bi bi-chevron-down"></i>
-                                </span>
-                            </div>
+                            </form>
                         </div>
                     </div>
 
