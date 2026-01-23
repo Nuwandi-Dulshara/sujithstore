@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\SearchController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -89,6 +90,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 */
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('category.show');
+
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 
 require __DIR__ . '/user.php';
