@@ -19,7 +19,17 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'user@test.com',
+            'password' => 'password123',
         ]);
+
+        // Seed some categories and products (products use discount_percentage)
+        $categories = \App\Models\Category::factory()->count(6)->create();
+
+        foreach ($categories as $category) {
+            \App\Models\Product::factory()->count(6)->create([
+                'category_id' => $category->id,
+            ]);
+        }
     }
 }
