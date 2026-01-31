@@ -39,6 +39,50 @@
         />
 
         <style>
+
+/* =================== Pagination =================== */
+.pagination-custom {
+    gap: 8px;
+    margin-top: 30px;
+}
+
+.pagination-custom .page-link {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f1f1;
+    color: #292d6c;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+.pagination-custom .page-link:hover {
+    background: #292d6c;
+    color: #fff;
+}
+
+.pagination-custom .page-item.active .page-link {
+    background: #ec1d23;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(236, 29, 35, 0.4);
+}
+
+.pagination-custom .page-item.disabled .page-link {
+    background: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.pagination-custom .dots {
+    background: transparent;
+    font-weight: bold;
+    color: #999;
+}
+
             body {
                 font-family: "Inter", sans-serif;
             }
@@ -1259,7 +1303,7 @@
 
     <!-- View more / Pagination -->
     <div class="d-flex justify-content-center align-items-center mt-5">
-        {{ $products->links() }}
+        {{ $products->links('vendor.pagination.full-beautiful') }}
     </div>
 </div>
 
