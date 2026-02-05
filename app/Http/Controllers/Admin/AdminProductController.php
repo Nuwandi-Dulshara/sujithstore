@@ -14,11 +14,44 @@ class AdminProductController extends Controller
     /**
      * Display product list
      */
-    public function index(Request $request)
-    {
-        $products = Product::with(['category', 'images'])->latest()->paginate(15);
-        return view('admin.products.index', compact('products'));
+public function index(Request $request)
+{
+    $products = Product::with(['category', 'images']);
+
+    if ($request->sort === 'price_asc') {
+
+        $products->orderByRaw("
+            CAST(
+                price - (price * IFNULL(discount_percentage, 0) / 100.0)
+            AS REAL) ASC
+        ");
+
+    } elseif ($request->sort === 'price_desc') {
+
+        $products->orderByRaw("
+            CAST(
+                price - (price * IFNULL(discount_percentage, 0) / 100.0)
+            AS REAL) DESC
+        ");
+
+    } elseif ($request->sort === 'name_asc') {
+
+        $products->orderBy('name', 'asc');
+
+    } elseif ($request->sort === 'name_desc') {
+
+        $products->orderBy('name', 'desc');
+
+    } else {
+
+        $products->orderBy('created_at', 'desc');
     }
+
+    $products = $products->paginate(15)->withQueryString();
+
+    return view('admin.products.index', compact('products'));
+}
+
 
     /**
      * Show create product form
