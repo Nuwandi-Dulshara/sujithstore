@@ -20,29 +20,6 @@
 
     <div class="row g-4 mb-4">
 
-
-        <div class="col-12 col-sm-6 col-xxl-3">
-            <div class="card border-0 shadow-sm overflow-hidden h-100 card-hover">
-                <div class="card-body p-4 position-relative" style="background: linear-gradient(135deg, #E63946 0%, #ff6b6b 100%);">
-                    <div class="d-flex align-items-center justify-content-between text-white">
-                        <div>
-                            <p class="mb-1 opacity-75 text-uppercase fw-bold small">New Orders</p>
-                            <h3 class="fw-bold mb-0">{{ $stats['orders'] ?? 0 }}</h3>
-                        </div>
-                        <div class="icon-box bg-white bg-opacity-25 rounded-circle text-white">
-                            <i class="bi bi-bag-check-fill"></i>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <span class="badge bg-white bg-opacity-25 text-white border border-white border-opacity-25">
-                            <i class="bi bi-dash"></i> 0%
-                        </span>
-                        <small class="text-white opacity-50 ms-2">vs yesterday</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="col-12 col-sm-6 col-xxl-3">
             <div class="card border-0 shadow-sm h-100 card-hover bg-white">
                 <div class="card-body p-4">
