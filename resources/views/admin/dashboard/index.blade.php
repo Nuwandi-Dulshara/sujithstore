@@ -65,64 +65,6 @@
             </div>
         </div>
     </div>
-
-    <div class="row g-4">
-        
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="fw-bold text-navy mb-0">Sales Analytics</h6>
-                    <select class="form-select form-select-sm w-auto border-0 bg-light">
-                        <option>This Week</option>
-                        <option>Last Month</option>
-                    </select>
-                </div>
-                <div class="card-body">
-                    <div id="salesChart" style="min-height: 300px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0 py-3">
-                    <h6 class="fw-bold text-navy mb-0">Recent Orders</h6>
-                </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush">
-                        @forelse($recent_orders as $order)
-                        <div class="list-group-item border-0 d-flex align-items-center px-4 py-3 hover-bg">
-                            <div class="avatar-initial rounded bg-light text-primary fw-bold me-3">
-                                {{ isset($order['user']) ? substr($order['user'], 0, 1) : 'U' }}
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-navy font-14">{{ $order['user'] ?? 'Unknown' }}</h6>
-                                <small class="text-muted">{{ $order['date'] ?? '' }}</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="fw-bold text-dark">{{ $order['amount'] ?? '' }}</div>
-                                @if(($order['status'] ?? '') == 'Completed')
-                                    <span class="badge bg-success-subtle text-success rounded-pill" style="font-size: 10px">Paid</span>
-                                @elseif(($order['status'] ?? '') == 'Pending')
-                                    <span class="badge bg-warning-subtle text-warning rounded-pill" style="font-size: 10px">Pending</span>
-                                @else
-                                    <span class="badge bg-danger-subtle text-danger rounded-pill" style="font-size: 10px">Failed</span>
-                                @endif
-                            </div>
-                        </div>
-                        @empty
-                        <div class="list-group-item border-0 px-4 py-3 text-muted">No recent orders found.</div>
-                        @endforelse
-                    </div>
-                    <div class="p-3 text-center border-top border-light">
-                        <a href="#" class="text-decoration-none text-primary small fw-bold">View All Orders <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
     <div class="row g-4 mt-4">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
