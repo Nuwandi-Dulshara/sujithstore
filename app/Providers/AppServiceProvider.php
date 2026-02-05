@@ -22,8 +22,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Ensure admin area uses admin.dashboard when RedirectIfAuthenticated triggers
+        // Only redirect to admin dashboard if the request is for admin routes
+        // and the 'admin' guard is authenticated. This prevents non-admin
+        // authenticated users from being redirected away from admin login.
         RedirectIfAuthenticated::redirectUsing(function (Request $request) {
-            if ($request->is('admin') || $request->is('admin/*')) {
+            if (($request->is('admin') || $request->is('admin/*')) && auth()->guard('admin')->check()) {
                 return route('admin.dashboard');
             }
 

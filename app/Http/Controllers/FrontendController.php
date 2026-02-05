@@ -8,39 +8,57 @@ use App\Models\Product;
 
 class FrontendController extends Controller
 {
+    /**
+     * Homepage – All products
+     */
     public function index(Request $request)
     {
         $sort = (string) $request->query('sort', '');
 
         $categories = Category::where('status', 'active')
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->get();
 
         $productsQuery = Product::with('images')
             ->where('status', 'available');
 
+        // ✅ FINAL PRICE SORTING (FIXED)
         switch ($sort) {
+
             case 'price_asc':
-                $productsQuery->orderBy('price', 'asc');
+                $productsQuery->orderByRaw("
+                    (price - (price * IFNULL(discount_percentage, 0) / 100.0)) ASC
+                ");
                 break;
+
             case 'price_desc':
-                $productsQuery->orderBy('price', 'desc');
+                $productsQuery->orderByRaw("
+                    (price - (price * IFNULL(discount_percentage, 0) / 100.0)) DESC
+                ");
                 break;
+
             case 'name_asc':
                 $productsQuery->orderBy('name', 'asc');
                 break;
+
             case 'name_desc':
                 $productsQuery->orderBy('name', 'desc');
                 break;
+
             default:
                 $productsQuery->latest();
         }
 
-        $products = $productsQuery->paginate(12)->appends(['sort' => $sort]); // 3 rows × 4 cards
+        $products = $productsQuery
+            ->paginate(12)
+            ->withQueryString();
 
         return view('user.index', compact('categories', 'products'));
     }
 
+    /**
+     * Category filter
+     */
     public function category(Request $request, $slug)
     {
         $sort = (string) $request->query('sort', '');
@@ -50,28 +68,41 @@ class FrontendController extends Controller
             ->firstOrFail();
 
         $productsQuery = Product::with('images')
-            ->where('category_id', $category->id)
-            ->where('status', 'available');
+            ->where('status', 'available')
+            ->where('category_id', $category->id);
 
+        // ✅ FINAL PRICE SORTING (FIXED)
         switch ($sort) {
+
             case 'price_asc':
-                $productsQuery->orderBy('price', 'asc');
+                $productsQuery->orderByRaw("
+                    (price - (price * IFNULL(discount_percentage, 0) / 100.0)) ASC
+                ");
                 break;
+
             case 'price_desc':
-                $productsQuery->orderBy('price', 'desc');
+                $productsQuery->orderByRaw("
+                    (price - (price * IFNULL(discount_percentage, 0) / 100.0)) DESC
+                ");
                 break;
+
             case 'name_asc':
                 $productsQuery->orderBy('name', 'asc');
                 break;
+
             case 'name_desc':
                 $productsQuery->orderBy('name', 'desc');
                 break;
+
             default:
                 $productsQuery->latest();
         }
 
-        $products = $productsQuery->paginate(12)->appends(['sort' => $sort]);
+        $products = $productsQuery
+            ->paginate(12)
+            ->withQueryString();
 
-        return view('user.category', compact('category', 'products'));
+        return view('user.index', compact('products', 'category'))
+            ->with('categories', Category::where('status', 'active')->get());
     }
 }

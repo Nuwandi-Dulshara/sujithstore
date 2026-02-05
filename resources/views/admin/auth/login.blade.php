@@ -74,14 +74,5 @@
     <button type="submit" class="btn btn-main w-100 mb-3">
         Sign In <i class="bi bi-box-arrow-in-right ms-1"></i>
     </button>
-
-    <div class="text-center">
-        <p class="text-muted mb-0 small">
-            Don't have an account?
-            <a href="{{ route('admin.register') }}" class="brand-link">
-                Create Account
-            </a>
-        </p>
-    </div>
 </form>
 @endsection
