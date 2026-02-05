@@ -68,8 +68,28 @@
     border-radius: 16px;
     padding: 22px 26px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 12px 30px rgba(31,43,91,.25);
+}
+
+.page-header h4 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.page-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-header img {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 5px;
 }
 
 .table-card {
@@ -92,7 +112,14 @@
 <div class="product-page">
 
     <div class="page-header">
-        <h4>Products</h4>
+                <div class="logo">
+            <!-- Replace with your real logo -->
+            <img src="{{ asset('assets/images/logo.png') }}" alt="Logo">
+            <div>
+                <h4>Products</h4>
+                <small class="opacity-75">Manage all product here</small>
+            </div>
+        </div>
         <a href="{{ route('admin.products.create') }}" class="btn btn-light">
             + Add Product
         </a>
