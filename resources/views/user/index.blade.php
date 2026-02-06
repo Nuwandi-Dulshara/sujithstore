@@ -21,6 +21,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         /* =================== Pagination =================== */
@@ -267,7 +268,6 @@
         .custom-dropdown .custom-trigger {
             width: 100%;
             display: block;
-            padding: 0.375rem 3.25rem 0.375rem 0.75rem;
             font-size: 1rem;
             line-height: 1.5;
             color: #ffffff;
@@ -285,7 +285,8 @@
 
         .custom-dropdown .custom-menu {
             position: absolute;
-            top: 1px;
+            top: 100%;
+            margin-top: 6px;
             left: 0;
             right: 0;
             background: #fff;
@@ -339,6 +340,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .custom-dropdown .dropdown-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
 
         .custom-dropdown .dropdown-arrow i {
             transition: transform 0.3s ease-in-out;
@@ -1146,6 +1154,8 @@
                         <form id="sortForm" method="GET" action="{{ url()->current() }}"
                             style="display:inline-block; width:200px; margin-left:10px;">
                             <input type="hidden" name="q" value="{{ request('q') }}" />
+                            
+                            <div class="custom-dropdown">
                             <select id="sortSelect" name="sort" onchange="this.form.submit()" class="form-select">
                                 <option value="">Default</option>
                                 <option value="price_asc" {{ request('sort')=='price_asc' ? 'selected' : '' }}>
@@ -1160,6 +1170,12 @@
                                 <option value="name_desc" {{ request('sort')=='name_desc' ? 'selected' : '' }}>Name: Z-A
                                 </option>
                             </select>
+                            <!-- ARROW -->
+                            <div class="dropdown-arrow">
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -1405,125 +1421,120 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <!-- dropdown -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document
-                .querySelectorAll(".custom-dropdown")
-                .forEach(initCustomDropdown);
+ <script>
+document.addEventListener("DOMContentLoaded", function () {
+    document
+        .querySelectorAll(".custom-dropdown")
+        .forEach(initCustomDropdown);
 
-            function initCustomDropdown(wrapper) {
-                const native = wrapper.querySelector("select");
-                if (!native) return;
+    function initCustomDropdown(wrapper) {
 
-                wrapper.style.position = "relative";
+        const nativeSelect = wrapper.querySelector("select");
+        const arrow = wrapper.querySelector(".dropdown-arrow");
 
-                let isUpdating = false;
+        if (!nativeSelect || !arrow) return;
 
-                /* ---------- Trigger button ---------- */
-                const trigger = document.createElement("button");
-                trigger.type = "button";
-                trigger.className = "custom-trigger";
-                trigger.setAttribute("aria-haspopup", "listbox");
-                trigger.setAttribute("aria-expanded", "false");
+        wrapper.style.position = "relative";
+        let isUpdating = false;
 
-                trigger.textContent =
-                    native.options[native.selectedIndex]?.text ?? "";
+        /* ---------- Trigger button ---------- */
+        const trigger = document.createElement("button");
+        trigger.type = "button";
+        trigger.className = "custom-trigger";
+        trigger.setAttribute("aria-haspopup", "listbox");
+        trigger.setAttribute("aria-expanded", "false");
 
-                wrapper.insertBefore(
-                    trigger,
-                    wrapper.querySelector(".dropdown-arrow"),
-                );
+        trigger.textContent =
+            nativeSelect.options[nativeSelect.selectedIndex]?.text ?? "";
 
-                /* ---------- Menu ---------- */
-                const menu = document.createElement("div");
-                menu.className = "custom-menu";
-                menu.setAttribute("role", "listbox");
+        wrapper.insertBefore(trigger, arrow);
 
-                menu.style.position = "absolute";
-                menu.style.top = "100%";
-                menu.style.left = "0";
-                menu.style.right = "0";
+        /* ---------- Menu ---------- */
+        const menu = document.createElement("div");
+        menu.className = "custom-menu";
+        menu.setAttribute("role", "listbox");
 
-                wrapper.appendChild(menu);
+        wrapper.appendChild(menu);
 
-                function renderMenu() {
-                    menu.innerHTML = "";
+        function renderMenu() {
+            menu.innerHTML = "";
 
-                    [...native.options].forEach((opt, idx) => {
-                        const item = document.createElement("div");
-                        item.className = "custom-item";
-                        item.dataset.index = idx;
+            [...nativeSelect.options].forEach((opt, idx) => {
+                const item = document.createElement("div");
+                item.className = "custom-item";
+                item.dataset.index = idx;
 
-                        if (idx === native.selectedIndex) {
-                            item.classList.add("is-selected");
-                        }
-
-                        const check = document.createElement("span");
-                        check.className = "check";
-                        check.innerHTML = '<i class="bi bi-check-lg"></i>';
-
-                        const label = document.createElement("span");
-                        label.className = "label";
-                        label.textContent = opt.text;
-
-                        item.appendChild(check);
-                        item.appendChild(label);
-
-                        item.addEventListener("click", () => {
-                            selectIndex(idx);
-                            closeMenu();
-                        });
-
-                        menu.appendChild(item);
-                    });
+                if (idx === nativeSelect.selectedIndex) {
+                    item.classList.add("is-selected");
                 }
 
-                renderMenu();
+                const check = document.createElement("span");
+                check.className = "check";
+                check.innerHTML = '<i class="bi bi-check-lg"></i>';
 
-                /* ---------- Open / Close ---------- */
-                function openMenu() {
-                    wrapper.classList.add("open");
-                    trigger.setAttribute("aria-expanded", "true");
-                }
+                const label = document.createElement("span");
+                label.className = "label";
+                label.textContent = opt.text;
 
-                function closeMenu() {
-                    wrapper.classList.remove("open");
-                    trigger.setAttribute("aria-expanded", "false");
-                }
+                item.appendChild(check);
+                item.appendChild(label);
 
-                trigger.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    wrapper.classList.contains("open")
-                        ? closeMenu()
-                        : openMenu();
+                item.addEventListener("click", () => {
+                    selectIndex(idx);
+                    closeMenu();
                 });
 
-                document.addEventListener("click", (e) => {
-                    if (!wrapper.contains(e.target)) closeMenu();
-                });
+                menu.appendChild(item);
+            });
+        }
 
-                /* ---------- Sync ---------- */
-                function selectIndex(idx) {
-                    if (isUpdating) return;
-                    isUpdating = true;
+        renderMenu();
 
-                    native.selectedIndex = idx;
-                    trigger.textContent = native.options[idx].text;
+        /* ---------- Open / Close ---------- */
+        function openMenu() {
+            wrapper.classList.add("open");
+            trigger.setAttribute("aria-expanded", "true");
+        }
 
-                    renderMenu();
-                    native.dispatchEvent(
-                        new Event("change", { bubbles: true }),
-                    );
+        function closeMenu() {
+            wrapper.classList.remove("open");
+            trigger.setAttribute("aria-expanded", "false");
+        }
 
-                    isUpdating = false;
-                }
-
-                native.addEventListener("change", () => {
-                    if (!isUpdating) selectIndex(native.selectedIndex);
-                });
-            }
+        trigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            wrapper.classList.contains("open")
+                ? closeMenu()
+                : openMenu();
         });
-    </script>
+
+        document.addEventListener("click", (e) => {
+            if (!wrapper.contains(e.target)) closeMenu();
+        });
+
+        /* ---------- Sync ---------- */
+        function selectIndex(idx) {
+            if (isUpdating) return;
+            isUpdating = true;
+
+            nativeSelect.selectedIndex = idx;
+            trigger.textContent = nativeSelect.options[idx].text;
+
+            renderMenu();
+            nativeSelect.dispatchEvent(
+                new Event("change", { bubbles: true })
+            );
+
+            isUpdating = false;
+        }
+
+        nativeSelect.addEventListener("change", () => {
+            if (!isUpdating) selectIndex(nativeSelect.selectedIndex);
+        });
+    }
+});
+</script>
+
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Owl Carousel JS -->
@@ -1557,4 +1568,4 @@
 
 </body>
 
-</html>
+</html >               
